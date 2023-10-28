@@ -13,9 +13,9 @@ import { group } from 'console'
 import PhoneNumber from 'awesome-phonenumber'
 
 /*============= WAKTU =============*/
-let wibh = moment.tz('Asia/Jakarta').format('HH')
-    let wibm = moment.tz('Asia/Jakarta').format('mm')
-    let wibs = moment.tz('Asia/Jakarta').format('ss')
+let wibh = moment.tz('Asia/Kolkata').format('HH')
+    let wibm = moment.tz('Asia/Kolkata').format('mm')
+    let wibs = moment.tz('Asia/Kolkata').format('ss')
     let wktuwib = `${wibh} H ${wibm} M ${wibs} S`
     let wktugeneral = `${wibh}:${wibm}:${wibs}`
     
@@ -32,7 +32,7 @@ let wibh = moment.tz('Asia/Jakarta').format('HH')
 const readMore = more.repeat(4001)
 
 /*============= MAIN INFO =============*/
-global.owner = [['6285174269046', 'ShirokamiRyzen', true]]
+global.owner = [['919148942515', 'Vivek', true]]
 global.mods = []
 global.prems = []
 global.nomorbot = '6285864034767'
