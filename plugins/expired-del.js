@@ -13,6 +13,7 @@ handler.tags = ['owner']
 handler.command = /^(delexpired|delsewa)$/i
 handler.rowner = true
 handler.group = true
+handler.premium = false
 
 export default handler
 

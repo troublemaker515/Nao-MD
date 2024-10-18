@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-import uploadImage from '../lib/uploadImage.js'
+import { uploadPomf } from '../lib/uploadImage.js'
 
 let handler = async (m, { conn, usedPrefix, command, text }) => {
     try {
@@ -10,8 +10,11 @@ let handler = async (m, { conn, usedPrefix, command, text }) => {
         if (!mime) throw 'Kirim/Reply Gambar dengan caption .toanime'
         m.reply('Tunggu Sebentar...')
         let media = await q.download()
-        let url = await uploadImage(media)
-        let hasil = await (await fetch(`https://skizo.tech/api/toanime?url=${url}&apikey=${global.xzn}`)).buffer()
+        let url = await uploadPomf(media)
+        let response = await fetch(`https://widipe.com/toanime?url=${url}`)
+        let json = await response.json()
+        let hasilUrl = json.url
+        let hasil = await (await fetch(hasilUrl)).buffer()
         await conn.sendFile(m.chat, hasil, '', global.wm, m)
     } catch (error) {
         console.error(error)
@@ -24,6 +27,6 @@ handler.tags = ['anime', 'ai']
 handler.command = /^(toanime)$/i
 
 handler.register = true
-handler.limit = true
+handler.limit = 3
 
 export default handler

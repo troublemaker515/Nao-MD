@@ -1,16 +1,15 @@
 //By Shirokami Ryzen
 //Dont delete this credit!!!
 import fetch from 'node-fetch'
+import { pinterest } from '../lib/scrape.js'
 
 let handler = async (m, { conn, command, text, usedPrefix }) => {
-  let api = "api.ryzendesu.com"
   if (!text) throw `Input *Query*`
   conn.reply(m.chat, 'Wait a moment...', m)
 
   try {
-    let res = await fetch(`https://api.ryzendesu.com/api/search/pinterest?text=${text}&apikey=${global.ryzen}`);
-    let result = await res.json();
-    let gambarUrls = result.result.slice(0, 20); // Ambil 20 gambar pertama
+    const hasil = await pinterest(text);
+    let gambarUrls = hasil.slice(0, 20); // Ambil 20 gambar pertama
 
     // Mengacak array gambarUrls
     for (let i = gambarUrls.length - 1; i > 0; i--) {
@@ -30,7 +29,6 @@ let handler = async (m, { conn, command, text, usedPrefix }) => {
       // Tambahkan jeda agar tidak mengirim gambar terlalu cepat
       await new Promise(resolve => setTimeout(resolve, 500));
     }
-    m.reply(api)
   } catch (e) {
     console.log(e)
     conn.reply(m.chat, 'Terjadi kesalahan saat mendownload gambar.', m)
@@ -40,5 +38,7 @@ let handler = async (m, { conn, command, text, usedPrefix }) => {
 handler.help = ['pinterest <keyword>']
 handler.tags = ['internet']
 handler.command = /^pinterest$/i
+
+handler.register = true
 
 export default handler

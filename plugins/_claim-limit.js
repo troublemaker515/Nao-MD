@@ -1,12 +1,12 @@
 const rewards = {
-  limit: 20,
+  limit: 10,
 }
 const cooldown = 86400000
 let handler = async (m,{ conn} ) => {
   let user = global.db.data.users[m.sender]
 
-  if (user.role === 'Free user' && user.limit >= 81) {
-    conn.reply(m.chat, 'Free user only have 100 daily Limit max', m)
+  if (user.role === 'Free user' && user.limit >= 20) {
+    conn.reply(m.chat, 'Free user only have 20 Limit max', m)
     return
   }
 
@@ -15,7 +15,7 @@ let handler = async (m,{ conn} ) => {
   for (let reward of Object.keys(rewards)) {
     if (!(reward in user)) continue
     user[reward] += rewards[reward]
-    text += `*+${rewards[reward]}* ${global.rpg.emoticon(reward)}${reward}\n`
+    text += `*+${rewards[reward]}* ${reward}\n`
   }
   conn.reply(m.chat, text.trim(), m)
   user.lastclaim = new Date * 1
@@ -25,6 +25,6 @@ handler.tags = ['main']
 handler.command = /^(claimlimit)$/i
 
 handler.cooldown = cooldown
-handler.inactive = false
+handler.disable = false
 
 export default handler

@@ -140,15 +140,6 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
       }
       chat.antiBadword = !isEnable
       break
-    case 'antitoxic':
-      if (m.isGroup) {
-        if (!(isAdmin || isOwner)) {
-          global.dfail('admin', m, conn)
-          throw false
-        }
-      }
-      chat.antiToxic = isEnable
-      break
     case 'autolevelup':
       isUser = true
       user.autolevelup = isEnable
@@ -198,6 +189,14 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
       }
       global.opts['pconly'] = isEnable
       break
+    case 'owneronly':
+      isAll = true
+      if (!isROwner) {
+        global.dfail('rowner', m, conn)
+        throw false
+      }
+      global.opts['owneronly'] = isEnable
+      break
     case 'gconly':
     case 'grouponly':
       isAll = true
@@ -206,6 +205,14 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
         throw false
       }
       global.opts['gconly'] = isEnable
+      break
+    case 'self':
+      isAll = true
+      if (!isROwner) {
+        global.dfail('rowner', m, conn)
+        throw false
+      }
+      global.opts['self'] = isEnable
       break
     case 'swonly':
     case 'statusonly':
@@ -225,28 +232,71 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
       }
       chat.viewonce = isEnable
       break
+    case 'nsfw':
+      if (m.isGroup) {
+        if (!(isAdmin || isOwner)) {
+          global.dfail('admin', m, conn)
+          throw false
+        }
+      }
+      chat.nsfw = isEnable
+      break
+    case 'menu':
+      if (m.isGroup) {
+        if (!(isAdmin || isOwner)) {
+          global.dfail('admin', m, conn)
+          throw false
+        }
+      }
+      chat.menu = isEnable
+      break
+    case 'simi':
+      if (m.isGroup) {
+        if (!(isAdmin || isOwner)) {
+          global.dfail('admin', m, conn)
+          throw false
+        }
+      }
+      chat.simi = isEnable
+      break
+    case 'autogpt':
+      if (m.isGroup) {
+        if (!(isAdmin || isOwner)) {
+          global.dfail('admin', m, conn)
+          throw false
+        }
+      }
+      chat.autogpt = isEnable
+      break
     default:
       if (!/[01]/.test(command)) return m.reply(`
 List option:
-| welcome
-| delete
-| public
 | antibadword
-| antilink
 | antidelete
+| antilink
 | antisticker
 | autobio
-| autosticker
+| autobio
+| autogpt
 | autolevelup
+| autoread
+| autosticker
+| delete
 | detect
 | document
-| whitelistmycontacts
-| restrict
-| nyimak
-| autoread
-| pconly
 | gconly
+| menu
+| nsfw
+| nyimak
+| owneronly
+| pconly
+| public
+| self
+| simi
 | swonly
+| whitelistmycontacts
+| welcome
+
 Contoh:
 ${usedPrefix}enable welcome
 ${usedPrefix}disable welcome

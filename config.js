@@ -37,55 +37,42 @@ global.mods = []
 global.prems = []
 global.nomorbot = '6285864034767'
 global.nomorown = '6285174269046'
-global.nomorwa = '0'
-
 
 /*============= WATERMARK =============*/
 global.readMore = readMore
-global.author = 'ShirokamiRyzen'
-global.namebot = 'Nao-Botz V5'
-global.wm = '© NaoBotz By ShirokamiRyzen'
+global.author = 'Shirokami Ryzen'
+global.namebot = 'Nao-MD ESM'
+global.wm = '© Nao-MD By Shirokami Ryzen'
 global.watermark = wm
 global.botdate = `⫹⫺ DATE: ${week} ${date}\n⫹⫺ 𝗧𝗶𝗺𝗲: ${wktuwib}`
 global.bottime = `T I M E : ${wktuwib}`
-global.stickpack = `Sticker Dibuat dengan ${namebot}\ngithub.com/ShirokamiRyzen\n\nNao-Bot\n+6285864034767`
-global.stickauth = `© NaoBotz By ShirokamiRyzen`
+global.stickpack = `Sticker Dibuat dengan ${namebot}\ngithub.com/ShirokamiRyzen\n\nNao-MD ESM\n+${nomorbot}`
+global.stickauth = `© Nao-MD By Shirokami Ryzen`
 global.week = `${week} ${date}`
 global.wibb = `${wktuwib}`
 
-/*============= OWNER INFO =============*/
-global.nameown1= 'Ryzn'
-global.nameown2 = 'Ryzn'
-/*============= MEDIA LINK =============*/
-global.Linkgc = 'Bentar'
-global.lynk = ''
-
-
 //*============= SOSMED =============*/
 global.sig = 'https://www.instagram.com/ryzen_vermillion'
-global.sgh = 'https://github.com/ShirokamiRyzen' //github
-global.sgc = '-' //group whatsapp
-global.sdc = '-' //discord
+global.sgh = 'https://github.com/ShirokamiRyzen'
+global.sgc = 'https://whatsapp.com/channel/0029VaGoqK589indDi4Am40J'
+global.sgw = 'https://ryzendesu.vip'
+global.sdc = '-'
+global.sfb = 'https://www.facebook.com/Nao.Tomori.UwU'
 global.snh = 'https://www.instagram.com/ryzen_vermillion'
 
 /*============= DONASI =============*/
 global.pdana = '085174269046'
 global.povo = '-'
 global.pgopay = '085174269046'
-global.plinkaja = '-' //link aja
+global.plinkaja = '-'
 global.ppulsa = '085174269046'
 global.ppulsa2 = '085174269046'
-global.psaweria = '-'
+global.psaweria = 'https://saweria.co/shirokamiryzen'
+global.bank1 = '109901209640'
+global.bank2 = '-'
 
 
 /*============= TAMPILAN =============*/
-global.ListHargaSewa = '├ 5 Hari IDR 3.000\n├ 7 Hari IDR 5.000\n├ 15+5 Hari IDR 10.000\n├ 30 Hari IDR 15.000'
-global.LyAtas1 = '☰ ━━━ ❨'
-global.LyAtas2 = '❩ ━━┄┈ •⟅'
-global.Ly = '┃'
-global.lybwh = '┗━━┈┈ ⳻⳻'
-global.sym = '◈▻'
-global.sym2 = '➭'
 global.dmenut = 'ଓ═┅═━–〈' //top
 global.dmenub = '┊↬' //body
 global.dmenub2 = '┊' //body for info cmd on Default menu
@@ -109,27 +96,19 @@ global.wait = 'Please Wait...'
 global.eror = 'Error!'
 
 /*============= WEB API KEY =============*/
-global.deepai = 'YOUR_APIKEY_HERE'
 global.openai = 'YOUR_APIKEY_HERE'  //api key bisa didapatkan dari https://openai.com/api/
 global.org = 'YOUR_APIKEY_HERE'  //openAI Organization name
-global.lolkey = 'SGWN' //buy API at https://api.lolhuman.xyz
-global.xzn = 'YOUR_APIKEY_HERE' //daftar sendiri jika key habis https://skizo.tech/
-global.xyro = 'YOUR_APIKEY_HERE' //https://api.xyroinee.xyz/
-global.ryzen = 'YOUR_APIKEY_HERE' //daftar di api.ryzendesu.com/
+global.xzn = 'YOUR_APIKEY_HERE'
 
 global.APIs = {
   // name: 'https://website'
-  lol: 'https://api.lolhuman.xyz',
-  violetics : 'https://violetics.pw',
-  males : 'https://api.lolhuman.xyz',
-  xzn : 'https://skizo.tech' //web api terserah ganti apa aja (buat welcome sama leave gc)
+  xzn : 'https://skizo.tech/',
 }
 
 global.APIKeys = { // APIKey Here
   // 'https://website': 'apikey'
-  'https://api.lolhuman.xyz': 'SGWN',
-  'https://violetics.pw': 'beta',
-  'https://skizo.tech' : '',
+
+  'https://skizo.tech/' : '',
 }
 
 /*============= OTHER =============*/
@@ -138,9 +117,7 @@ global.ddocx = 'application/vnd.openxmlformats-officedocument.wordprocessingml.d
 global.dxlsx = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 global.dpdf = 'application/pdf'
 global.drtf = 'text/rtf'
-//OPTIONS
-global.optsnsfw = true // Untuk mematikan Dan Menyalakan Nsfw
-global.premnsfw = true // Nsfw Mode Premium?
+
 global.thumb = 'https://telegra.ph/file/a7ac2b46f82ef7ea083f9.jpg' //Main Thumbnail
 global.imagebot = 'https://telegra.ph/file/a7ac2b46f82ef7ea083f9.jpg'
 global.giflogo = 'https://telegra.ph/file/a7ac2b46f82ef7ea083f9.jpg'
@@ -166,22 +143,11 @@ global.fla = [
 ]
 global.hwaifu = ['https://telegra.ph/file/a7ac2b46f82ef7ea083f9.jpg']
 global.thumblvlup = [
-  'https://telegra.ph/file/cc444e235a6073ef29b32.jpg',
-  'https://telegra.ph/file/6bc4e87932d7ea57b79ef.jpg',
-  'https://telegra.ph/file/bc2302ee38daa46c094ea.jpg',
-  'https://telegra.ph/file/c552a9fb2848811247f82.jpg'
+  'https://i.pinimg.com/originals/a0/34/8a/a0348ae908d8ac4ced76df289eb41e1a.jpg',
+  'https://i.pinimg.com/originals/be/3b/47/be3b477371cc249e49fd0bb3284de7d7.jpg',
+  'https://i.pinimg.com/originals/63/c3/37/63c337596b3391df0e72a9729ceca7b6.jpg',
+  'https://i.pinimg.com/originals/db/ed/5a/dbed5afac55d266602d0ca0c67622bb9.jpg'
 ]
-
-global.dtu = 'INSTAGRAM'
-global.urlnya = "https://www.instagram.com/ryzen_vermillion"
-global.dtc = 'CALL OWNER'
-global.phn = '0813 8730 7198'
-
-
-/*============= JANGAN DIUBAH =============*/
-global.fsizedoc = '99999999999999'
-global.fpagedoc = '999'
-global.thumbdoc = 'https://telegra.ph/file/6e45318d7c76f57e4a8bd.jpg'
 
 let file = fileURLToPath(import.meta.url)
 watchFile(file, () => {

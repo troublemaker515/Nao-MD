@@ -4,15 +4,17 @@ export async function before(m) {
     if (m.chat.endsWith('broadcast') || m.fromMe || m.isGroup) return
 
     let user = global.db.data.users[m.sender]
-    let txt = `👋Hai, ${ucapan()}
-${user.banned ? '📮Maaf, kamu dibanned & Tidak bisa menggunakan bot ini lagi' : `💬Ada yg bisa ${this.user.name} bantu?`}`.trim()
 
-    if (new Date() - user.pc < 21600000) return // waktu ori 21600000 (6 jam)
+    if (new Date() - user.pc < 86400000) return // waktu ori 21600000 (6 jam)
     await m.reply(`📮Note: Jangan spam botnya
 ⏩Ketik *.menu* untuk menampilkan menu
 
-📝Ingin support project ini agar terus update? kirim melalui:
-https://saweria.co/shirokamiryzen`)
+📝Ingin menghilangkan *limit*?
+Berdonasi minimal 10k kamu akan mendapat akses *Premium*
+
+Ketik *.donasi* untuk info lebih lengkap
+
+Note: Lifetime premium sudah tidak berlaku`)
     user.pc = new Date * 1
 }
 

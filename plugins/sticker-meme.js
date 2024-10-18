@@ -1,4 +1,4 @@
-import uploadImage from '../lib/uploadImage.js'
+import { uploadPomf } from '../lib/uploadImage.js'
 import { sticker } from '../lib/sticker.js'
 let handler = async (m, { conn, text, usedPrefix, command }) => {
     let [atas, bawah] = text.split`|`
@@ -7,7 +7,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     if (!mime) throw `balas gambar dengan perintah\n\n${usedPrefix + command} <${atas ? atas : 'teks atas'}>|<${bawah ? bawah : 'teks bawah'}>`
     if (!/image\/(jpe?g|png)/.test(mime)) throw `_*Mime ${mime} tidak didukung!*_`
     let img = await q.download()
-    let url = await uploadImage(img)
+    let url = await uploadPomf(img)
     let meme = `https://api.memegen.link/images/custom/${encodeURIComponent(atas ? atas : '')}/${encodeURIComponent(bawah ? bawah : '')}.png?background=${url}`
     let stiker = await sticker(false, meme, global.stickpack, global.wm)
     if (stiker) await conn.sendFile(m.chat, stiker, '', m, '', { asSticker: 1 })

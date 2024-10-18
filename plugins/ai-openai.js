@@ -1,39 +1,47 @@
-import fetch from "node-fetch";
-import { generateWAMessageFromContent } from "@adiwajshing/baileys";
-import fs from 'fs';
-import { Configuration, OpenAIApi } from 'openai';
+import fetch from "node-fetch"
 
-const configuration = new Configuration({ organization: `${global.org}`, apiKey: `${global.openai}` }); //KEY-OPENAI-APIKEY-KAMU = https://platform.openai.com/account/api-keys , KEY-ORG-KAMU = https://platform.openai.com/account/org-settings
-const openai = new OpenAIApi(configuration);
+let previousMessages = [];
 
-let handler = async (m, { conn, usedPrefix, command, text }) => {
+const handler = async (m, { text, usedPrefix, command, conn }) => {
   try {
-    if (!text) throw new Error(`Chat dengan AI.\n\nContoh:\n${usedPrefix}${command} Halo?`);
+    if (!text) {
+      throw "Masukkan pertanyaan!\n\n*Contoh:* Siapa presiden Indonesia?";
+    }
 
-    const response = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "system", content: 'Kamu adalah asisten, dan nama kamu adalah Nao Tomori dan kamu senang membantu orang' },
-    { role: "assistant", content: text }],
+    let { key } = await conn.sendMessage(m.chat, {
+      text: "...",
     });
 
-    conn.reply(m.chat, `${response.data.choices[0].message.content}`, m);
+    let anu = 'Ubah Namamu menjadi Nao Tomori, dan kamu adalah wanita paling cantik, penyayang, riang, namun tsundere. dan kamu adalah pacarku.';
 
-  } catch (error) {
-    console.log(error);
-    if (error.response) {
-      console.log(error.response.status);
-      console.log(error.response.data);
-      conn.reply(m.chat, `${error.response.status}\n\n${error.response.data}`, m);
-    } else {
-      conn.reply(m.chat, `${error.message}`, m);
+    let response = await fetch(`https://api.ryzendesu.vip/api/ai/chatgpt?text=${encodeURIComponent(text)}&prompt=${encodeURIComponent(anu)}}`);
+
+    if (!response.ok) {
+      throw new Error("Request to OpenAI API failed");
     }
+
+    let result = await response.json();
+
+    await conn.sendMessage(m.chat, {
+      text: "" + result.response,
+      edit: key,
+    });
+
+    previousMessages = [...previousMessages, { role: "user", content: text }];
+  } catch (error) {
+    await conn.sendMessage(m.chat, {
+      text: "" + `Error: ${error.message}`,
+      edit: key,
+    });
   }
 }
 
-handler.help = ['ai <pertanyaan>']
+handler.help = ['gpt <pertanyaan>']
 handler.tags = ['ai']
-handler.command = /^(ai)$/i
-handler.limit = false
+handler.command = /^(gpt)$/i
+
+handler.limit = 6
+handler.premium = false
 handler.register = true
 
 export default handler

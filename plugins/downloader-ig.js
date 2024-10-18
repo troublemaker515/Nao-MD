@@ -1,35 +1,43 @@
-/*
-import axios from 'axios'
-let handler = async (m, { conn, args, usedPrefix, command }) => {
-  const linknya = args[0]
+// Don't delete this credit!!!
+// Script by ShirokamiRyzen
 
-  if (!args[0]) throw `Input *URL*`
-  if (!args[0].match(/https:\/\/www.instagram.com\/(p|reel|tv)/gi)) throw `*Link salah! Perintah ini untuk mengunduh postingan ig/reel/tv`
-  let api = await axios.get(`https://skizo.tech/api/igdl?url=${linknya}&apikey=${global.xzn}`)
-  let wm = `${global.wm}`
-  await m.reply('Sedang diproses...')
-  for (let e of api.data.media)
-    await conn.sendFile(m.chat, e, '', wm, m)
-}
-*/
-import { instagramdl } from '@bochilteam/scraper'
-var handler = async (m, { args }) => {
-    if (!args[0]) throw 'Input URL'
-    try { 
-    	let res = await bochil.snapsave(args[0]) 
-    let media = await res[0].url
-    if (!res) throw 'Can\'t download the post'
-    m.reply(global.wait)
-    conn.sendMessage(m.chat, { video : { url : media }}, global.wm, m) 
-    } catch {
-     try {
-     	let res2 = await instagramdl(args[0]) 
-   let media2 = res2.url
-     return conn.sendFile(m.chat, media2, 'instagram.mp4', global.wm, m)
-     } catch {
-     conn.sendFile(m.chat,  media, '','', global.wm, m) } finally {
-   }
-  }
+import { snapsave } from '@bochilteam/scraper'
+
+let handler = async (m, { conn, args }) => {
+    if (!args[0]) throw 'Please provide a Instagram video URL';
+    const sender = m.sender.split('@')[0];
+    const url = args[0];
+
+    m.reply(wait);
+
+    try {
+        const data = await snapsave(url);
+        
+        // Find the HD video
+        let video = data.results[0];
+
+        if (video) {
+            const videoBuffer = await fetch(video.url).then(res => res.buffer());
+            const caption = `Ini kak videonya @${sender}`;
+
+            await conn.sendMessage(
+                m.chat, {
+                    video: videoBuffer,
+                    mimetype: "video/mp4",
+                    fileName: `video.mp4`,
+                    caption: caption,
+                    mentions: [m.sender],
+                }, {
+                    quoted: m
+                }
+            );
+        } else {
+            throw 'No available video found';
+        }
+    } catch (error) {
+        console.error('Handler Error:', error);
+        conn.reply(m.chat, `An error occurred: ${error}`, m);
+    }
 }
 
 handler.help = ['ig'].map(v => v + ' <url>')

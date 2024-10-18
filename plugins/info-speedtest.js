@@ -14,8 +14,10 @@ var handler = async (m) => {
         if (stderr.trim()) m.reply(stderr)
     }
 }
-handler.help = ['testspeed']
+handler.help = ['speedtest']
 handler.tags = ['info']
 handler.command = /^(speedtest)$/i
+
+handler.register = true
 
 export default handler

@@ -1,66 +1,86 @@
-import { youtubedl, youtubedlv2, youtubeSearch } from '@bochilteam/scraper'
+import yts from 'yt-search'
+import fs from 'fs'
+import os from 'os'
+import fetch from 'node-fetch'
+import { youtubedl } from '../lib/youtube.js'
 
 var handler = async (m, { conn, command, text, usedPrefix }) => {
-  try {
-    if (!text) {
-      return conn.reply(m.chat, `Gunakan contoh ${usedPrefix}${command} 7!! Orange`, m);
-    }
+  if (!text) throw `Use example ${usedPrefix}${command} 7!! Orange`;
 
-    conn.reply(m.chat, 'Tunggu sebentar, sedang dicari dan diunduh...', m);
+  let search = await yts(text);
+  let vid = search.videos[Math.floor(Math.random() * search.videos.length)];
+  if (!vid) throw 'Video Not Found, Try Another Title';
+  let { title, thumbnail, timestamp, views, ago, url } = vid;
 
-    let search = await youtubeSearch(text);
+  conn.sendMessage(m.chat, { image: { url: thumbnail }, caption: 'Please wait...' }, { quoted: m });
 
-    if (!search || !search.video || !search.video[0]) {
-      throw 'Video Tidak Ditemukan, Coba Judul Lain';
-    }
+  // Get video details and download link
+  const { result, resultUrl } = await youtubedl(url);
+  const audioInfo = resultUrl.audio.find(a => a.quality === '128kbps') || resultUrl.audio[0];
 
-    let vid = search.video[0];
-    let { authorName, title, thumbnail, duration, viewH, publishedTime, url } = vid;
+  // Fetch the download URL
+  const downloadUrl = await audioInfo.download();
 
-    let caption = `╭──── 〔 Y O U T U B E 〕 ─⬣
-⬡ Judul: ${title}
-⬡ Author: ${authorName}
-⬡ Durasi: ${duration}
-⬡ Views: ${viewH}
-⬡ Upload: ${publishedTime}
-⬡ Link: ${url}
-╰────────⬣`;
+  // Get the path to the system's temporary directory
+  const tmpDir = os.tmpdir();
+  const filePath = `${tmpDir}/${title}.mp3`;
 
-    conn.reply(m.chat, caption, m, {
+  // Create writable stream in the temporary directory
+  const writableStream = fs.createWriteStream(filePath);
+
+  // Download audio
+  const response = await fetch(downloadUrl);
+  if (!response.ok) throw new Error(`Failed to download audio: ${response.statusText}`);
+
+  // Pipe the response into the writable stream
+  response.body.pipe(writableStream);
+
+  writableStream.on('finish', async () => {
+    let doc = {
+      audio: {
+        url: filePath
+      },
+      mimetype: 'audio/mp4',
+      fileName: title,
       contextInfo: {
         externalAdReply: {
           showAdAttribution: true,
           mediaType: 2,
-          mediaUrl: thumbnail,
-          body: wm,
-          thumbnail: await (await conn.getFile(thumbnail)).data,
+          mediaUrl: url,
+          title: title,
+          body: 'Audio Download',
           sourceUrl: url,
-        },
-      },
-    });
-
-    const yt = await youtubedl(url).catch(async (_) => await youtubedlv2(url));
-    const link = await yt.audio['128kbps'].download();
-    let doc = {
-      audio: {
-        url: link,
-      },
-      mimetype: 'audio/mp4',
-      fileName: `${title}`,
+          thumbnail: await (await conn.getFile(thumbnail)).data
+        }
+      }
     };
 
-    return conn.sendMessage(m.chat, doc, { quoted: m });
-  } catch (error) {
-    console.error(error);
-    conn.reply(m.chat, 'Terjadi kesalahan. Silakan coba lagi nanti.\nNyari yang bener lah...', m);
-  }
-};
+    await conn.sendMessage(m.chat, doc, { quoted: m }).then(() => {
+      // Delete the audio file after sending
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error(`Failed to delete audio file: ${err}`);
+        } else {
+          console.log(`Deleted audio file: ${filePath}`);
+        }
+      });
+    }).catch((err) => {
+      console.error(`Failed to send message: ${err}`);
+    });
+  });
 
-handler.help = ['play'].map((v) => v + ' <pencarian>')
+  writableStream.on('error', (err) => {
+    console.error(`Failed to write audio file: ${err}`);
+    m.reply('Failed to download audio');
+  });
+}
+
+handler.help = ['play'].map((v) => v + ' <query>')
 handler.tags = ['downloader']
-handler.command = /^play$/i
+handler.command = /^(play)$/i
 
-handler.exp = 0
+handler.limit = 8
 handler.register = true
+handler.disable = false
 
 export default handler

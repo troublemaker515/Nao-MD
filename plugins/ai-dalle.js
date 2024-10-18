@@ -1,20 +1,57 @@
-import { Configuration, OpenAIApi } from 'openai'
-const configuration = new Configuration({ organization: `${global.org}`, apiKey: `${global.openai}` }); //KEY-OPENAI-APIKEY-KAMU = https://platform.openai.com/account/api-keys , KEY-ORG-KAMU = https://platform.openai.com/account/org-settings
-const openai = new OpenAIApi(configuration);
+import fetch from "node-fetch"
+
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+    let wm = global.wm
+
+    if (!text) throw `This command generates image from texts\n\n Example usage\n${usedPrefix + command} Wooden house on snow mountainh`
+    await m.reply(wait)
+
+    await conn.relayMessage(m.chat, { reactionMessage: { key: m.key, text: '👌' } }, { messageId: m.key.id })
+    try {
+        let url = `https://widipe.com/dalle?text=${text}`
+
+        await conn.sendFile(m.chat, await (await fetch(url)).buffer(), 'dalle.jpg', wm, m)
+        m.react(done)
+
+    } catch (e) {
+        console.log(e)
+        conn.reply(eror)
+    }
+}
+
+handler.help = ['dalle <prompt>']
+handler.tags = ['ai']
+handler.command = /^(dalle)$/i
+
+handler.premium = false
+handler.limit = 5
+handler.register = true
+
+export default handler
+
+/*import OpenAI from 'openai'
+
+const mySecret = process.env[`${global.openai}`] // process.env['key-apikey'] ubah jadi key-APIKEY kamu di openai.com
+
+const openai = new OpenAI({ apiKey: mySecret });
 
 let handler = async (m, { conn, text, command }) => {
     try {
-        if (!text) throw new Error(`Membuat gambar dari AI.\n\nContoh:\n.img Rumah kayu diatas gunung bersalju\n\n\n\nCreate image from AI\n\nExample:\n.img Wooden house on snow mountain`);
-        
+        if (!text) throw new Error(`Membuat gambar dari AI.\n\nContoh:\n.img Wooden house on snow mountain`);
+
         await m.reply(wait)
-        const response = await openai.createImage({
+        const response = await openai.images.generate({
+            model: "dall-e-2", // dall-e-3 terlalu banyak permintaan jadi sering error
             prompt: text,
             n: 1,
-            size: "1024x1024",
+            // quality: 'hd', // jika mau ganti optional, defaultnya adalah standart
+            size: "1024x1024", // Pixel Tersedia 1024x1024, 1024x1792 or 1792x1024
         });
-        
-        conn.sendFile(m.chat, response.data.data[0].url, text)
-        
+
+        conn.sendFile(m.chat, response.data[0].url, 'image.png', `Done`, m)
+        // Or use conn.reply:
+        // conn.reply(m.chat, `Done\n\n\nJika bot AI tidak dapat menjawab, silahkan donasi minimal 1k untuk menghidupkannya kembali.\n\n Dana: ${Nomor}\nGopay: ${Nomor}`, m);
+
     } catch (error) {
         if (error.response) {
             console.log(error.response.status);
@@ -26,14 +63,4 @@ let handler = async (m, { conn, text, command }) => {
         }
     }
 }
-
-
-handler.help = ['dalle <prompt>']
-handler.tags = ['ai']
-handler.command = /^(dalle)$/i
-
-handler.premium = false
-handler.limit = true
-handler.register = true
-
-export default handler
+*/

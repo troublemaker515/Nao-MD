@@ -1,23 +1,24 @@
-import fetch from 'node-fetch'
-let handler = async (m, { conn }) => {
-  let caption = `
+let handler = async (m) => {
+  let replyMessage = `
 *「 Owner Website 」*
 
-Main Site: ryzendesu.com
-Mod APK: app.ryzendesu.com
-KMS Activator: kms.ryzendesu.com
+Nonton Anime: ryzendesu.vip
+Modded App: forum.ryzendesu.vip
 
-Rest API: api.ryzendesu.com
-public API: backend.ryzendesu.com
-YTDL: ytdl.ryzendesu.com
-Media extractor: extractor.ryzendesu.com
+*「 Android Modded Apps 」*
+forum.ryzendesu.vip/forumdisplay.php?fid=6
 
-`.trim()
-  m.reply(caption)
-}
+*「 Windows Modded Apps 」*
+https://forum.ryzendesu.vip/forumdisplay.php?fid=5
+`.trim();
+
+  m.reply(replyMessage);
+};
+
 handler.help = ['website']
 handler.tags = ['main']
 handler.command = /^(website)$/i
+
 handler.limit = false
 
 export default handler

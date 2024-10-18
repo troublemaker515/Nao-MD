@@ -1,7 +1,7 @@
 <p align="center">
     <img src="./media/own.jpg" width="100%" style="margin-left: auto;margin-right: auto;display: block;">
 </p>
-<h1 align="center">Nao-Botz V5</h1>
+<h1 align="center">Nao-MD ESM</h1>
 
 </p>
 <p align="center">
@@ -12,8 +12,10 @@
 <a><img src="https://img.shields.io/badge/Maintaned%3F-Actively%20Developed-blue?style=flat-square"></a>
 
 ##
-[![BOT WHATSAPP](https://img.shields.io/badge/WhatsApp%20BOT-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://api.whatsapp.com/send/?phone=6285864034767&text=.menu) 
-[![ONWER](https://img.shields.io/badge/Owner%20BOT-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://wa.me/6285174269046) 
+[![BOT WHATSAPP](https://img.shields.io/badge/WhatsApp%20BOT-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://api.whatsapp.com/send/?phone=6285864034767&text=.menu)
+[![CHANNEL](https://img.shields.io/badge/Channel-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://whatsapp.com/channel/0029VaGoqK589indDi4Am40J)
+[![ONWER](https://img.shields.io/badge/Owner%20BOT-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://wa.me/6285174269046)
+ 
 
 
 
@@ -22,11 +24,13 @@
 - If the feature not working, just buy your own API key
 - OpenAI require API key, so you need provide it
 - If you cant see the pairing code check [here](https://github.com/ShirokamiRyzen/Nao-MD/issues/10)
+- If you see #HIDDEN in error logs, just fill all API key in config.js or leave it blank.
 ---------
 - Ubah semua Informasi Owner di config.js
 - Jika sebagian fitur ada yang tidak berfungsi, beli API key lu sendiri
-- OpenAI perlu Api key jadi lu harus sediain sendiri
+- OpenAI perlu API key jadi lu harus sediain sendiri
 - Gak liat pairing code? [cek sini](https://github.com/ShirokamiRyzen/Nao-MD/issues/10)
+- Kalo di error log muncul #HIDDEN isi semua API key di config.js atau lu kosongin aja isinya
 
 
 ### a little about this bot

@@ -1,41 +1,51 @@
+// Don't delete this credit!!!
+// Script by ShirokamiRyzen
+
 import axios from 'axios'
-import fetch from 'node-fetch'
 
-const getBuffer = async (url) => {
-    const response = await fetch(url);
-    const buffer = await response.buffer();
-    return buffer;
-};
+let handler = async (m, { conn, args }) => {
+    if (!args[0]) throw 'Please provide a Facebook video URL';
+    const sender = m.sender.split('@')[0];
+    const url = args[0];
 
-var handler = async (m, { args }) => {
-    if (!args[0]) {
-        throw 'Input URL\nEx: .fb https://www.facebook.com/groups/175204112986693/permalink/1621191825054574/?mibextid=Nif5oz';
-    }
-    
+    m.reply(wait);
+
     try {
-        const response = await axios.get(`https://backend.shirokamiryzen.repl.co/fb?u=${args[0]}`);
+        const { data } = await axios.get(`https://api.ryzendesu.vip/api/downloader/fbdl?url=${encodeURIComponent(url)}`);
+
+        if (!data.status || !data.data || data.data.length === 0) throw 'No available video found';
+
+        // Prioritize 720p (HD) and fallback to 360p (SD)
+        let video = data.data.find(v => v.resolution === '720p (HD)') || data.data.find(v => v.resolution === '360p (SD)');
         
-        // Check if the response data is an array with at least one URL
-        if (Array.isArray(response.data) && response.data.length > 0) {
-            const videoUrl = response.data[0];
-            
-            // Fetch and send the video
-            const videoBuffer = await getBuffer(videoUrl);
-            conn.sendFile(m.chat, videoBuffer, 'video.mp4', 'Video Kualitas HD', m);
+        if (video && video.url) {
+            const videoBuffer = await axios.get(video.url, { responseType: 'arraybuffer' }).then(res => res.data);
+            const caption = `Ini kak videonya @${sender}`;
+
+            await conn.sendMessage(
+                m.chat, {
+                video: videoBuffer,
+                mimetype: "video/mp4",
+                fileName: `video.mp4`,
+                caption: caption,
+                mentions: [m.sender],
+            }, {
+                quoted: m
+            }
+            );
         } else {
-            // Handle the case where the response data structure is different
-            throw 'Invalid response format from the server';
+            throw 'No available video found';
         }
     } catch (error) {
-        console.error(error);
-        const cap = 'Gagal mengunduh video FB';
-        conn.sendFile(m.chat, 'facebook.mp4', 'facebook.mp4', cap, m);
+        console.error('Handler Error:', error);
+        conn.reply(m.chat, `An error occurred: ${error}`, m);
     }
 }
 
 handler.help = ['fb <url>']
 handler.tags = ['downloader']
-handler.command = /^(fbdownload|fb(dl)?)$/i
+handler.command = /^(fbdownload|facebook|fb(dl)?)$/i
+
 handler.limit = true
 handler.register = true
 
